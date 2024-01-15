@@ -1,12 +1,8 @@
 import React from "react";
-import { Text, View } from "react-native";
+import RootStackNavigator from "./src/navigation";
 
-const App = () => {
-  return (
-    <View>
-      <Text>Hello world</Text>
-    </View>
-  );
+const App: React.FC = () => {
+  return <RootStackNavigator />;
 };
 
 export default App;
