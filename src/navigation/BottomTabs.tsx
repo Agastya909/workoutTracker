@@ -16,7 +16,7 @@ const BottomTabs: React.FC = () => {
         tabBarStyle: {
           backgroundColor: colors.card,
           borderTopColor: colors.card,
-          marginTop: 10
+          marginTop: 20
         },
         tabBarIcon: ({ focused }) => {
           const routeName = route.name;

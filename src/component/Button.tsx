@@ -12,6 +12,9 @@ type ButtonProp = {
   marginVertical?: number;
   paddingHorizontal?: number;
   paddingVertical?: number;
+  elevation?: number;
+  fontFamily?: string;
+  textColor?: string;
   onPress: () => void;
 };
 
@@ -26,13 +29,15 @@ const Button: React.FC<ButtonProp> = props => {
         marginHorizontal: props.marginHorizontal || 0,
         marginVertical: props.marginVertical || 0,
         paddingHorizontal: props.paddingHorizontal || 0,
-        paddingVertical: props.paddingVertical || 0
+        paddingVertical: props.paddingVertical || 0,
+        elevation: props.elevation || 2
       }}>
       <TextBox
         textBody={props.buttonText}
         textAlign="center"
-        fontFamily="Poppins-SemiBold"
+        fontFamily={props.fontFamily || "Poppins-SemiBold"}
         fontSize={props.textSize || 20}
+        color={props.textColor || colors.text}
       />
     </Pressable>
   );
