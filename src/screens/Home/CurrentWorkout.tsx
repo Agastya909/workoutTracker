@@ -14,7 +14,7 @@ const CurrentWorkout: React.FC = () => {
   const [canGoBack, setCanGoBack] = useState<boolean>(false);
   const [isModalVisible, setModalVisible] = useState<boolean>(false);
   const { colors } = useTheme();
-
+  // not working properly
   useEffect(() => {
     Navigation.addListener("beforeRemove", e => {
       if (isWorkout === true && canGoBack === false) return;
