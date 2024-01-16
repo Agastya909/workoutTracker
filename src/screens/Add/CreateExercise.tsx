@@ -1,5 +1,5 @@
-import React, { useState } from "react";
-import { View, ToastAndroid, ScrollView, ActivityIndicator } from "react-native";
+import React, { useEffect, useRef, useState } from "react";
+import { View, ToastAndroid, ScrollView, ActivityIndicator, Animated } from "react-native";
 import { TextBox, TextHeader } from "../../component/Textbox";
 import InputBox from "../../component/TextInput";
 import Button from "../../component/Button";
@@ -16,6 +16,51 @@ const CreateExercise: React.FC = () => {
   const [exerciseType, setExerciseType] = useState<"Cardio" | "Weight">("Weight");
   const [targetArea, setTargetArea] = useState<string[]>([]);
   const [processing, setProcessing] = useState<boolean>(false);
+  const animatedValue = useRef(new Animated.Value(0)).current;
+  const animatedXYTarget = useRef(new Animated.ValueXY({ x: 0, y: 200 })).current;
+
+  useEffect(() => {
+    fadeIn(350);
+    targetSlideIn(350);
+  }, []);
+
+  const fadeIn = (delay?: number) => {
+    Animated.timing(animatedValue, {
+      toValue: 1,
+      duration: 150,
+      delay: delay || 0,
+      useNativeDriver: true
+    }).start();
+  };
+
+  const fadeOut = () => {
+    Animated.timing(animatedValue, {
+      toValue: 0,
+      duration: 150,
+      useNativeDriver: true
+    }).start(() => {
+      setExerciseType("Cardio");
+      setTargetArea([]);
+    });
+  };
+
+  const targetSlideIn = (ms?: number) => {
+    Animated.timing(animatedXYTarget, {
+      toValue: { x: 0, y: 0 },
+      duration: 250,
+      delay: ms || 0,
+      useNativeDriver: true
+    }).start();
+  };
+
+  const targetSlideOut = (ms?: number) => {
+    Animated.timing(animatedXYTarget, {
+      toValue: { x: 0, y: 100 },
+      duration: 250,
+      delay: ms || 0,
+      useNativeDriver: true
+    }).start();
+  };
 
   const handleNameChange = (text: string) => {
     setExerciseName(text);
@@ -66,6 +111,7 @@ const CreateExercise: React.FC = () => {
     <View style={{ flex: 1, marginHorizontal: 10, paddingTop: 40 }}>
       <TextHeader textBody="New Exercise" textAlign="center" />
       <InputBox
+        textSize={20}
         placeholder="Enter name"
         paddingVertical={15}
         paddingHorizontal={20}
@@ -73,7 +119,7 @@ const CreateExercise: React.FC = () => {
         handleChange={handleNameChange}
         marginVertical={20}
       />
-      <TextBox textBody="Type" fontSize={20} />
+      <TextHeader textBody="Type" fontSize={20} />
       <View style={{ display: "flex", flexDirection: "row" }}>
         <View
           style={{
@@ -85,8 +131,8 @@ const CreateExercise: React.FC = () => {
             buttonText="Cardio"
             paddingVertical={10}
             onPress={() => {
-              setTargetArea([]);
-              setExerciseType("Cardio");
+              fadeOut();
+              targetSlideOut();
             }}
             backgroundColor={exerciseType === "Cardio" ? colors.notification : colors.card}
           />
@@ -100,33 +146,44 @@ const CreateExercise: React.FC = () => {
           <Button
             buttonText="Weights"
             paddingVertical={10}
-            onPress={() => setExerciseType("Weight")}
+            onPress={() => {
+              setExerciseType("Weight");
+              fadeIn(100);
+              targetSlideIn();
+            }}
             backgroundColor={exerciseType === "Weight" ? colors.notification : colors.card}
           />
         </View>
       </View>
-      {exerciseType === "Weight" ? <TextBox textBody="Target Area" marginTop={10} fontSize={20} /> : null}
-      <ScrollView style={{ flex: 1, marginTop: 10 }}>
-        <View style={{ display: "flex", flexDirection: "row", flexWrap: "wrap", justifyContent: "center" }}>
-          {exerciseType === "Weight"
-            ? TARGET_AREA.map((element, index) => {
-                return (
-                  <Button
-                    key={index}
-                    buttonText={element}
-                    marginVertical={5}
-                    marginHorizontal={5}
-                    paddingVertical={5}
-                    paddingHorizontal={10}
-                    fontFamily="Poppins-Medium"
-                    backgroundColor={targetArea.includes(element) ? colors.notification : colors.card}
-                    onPress={() => handleTargetAreaItems(element)}
-                  />
-                );
-              })
-            : null}
-        </View>
-      </ScrollView>
+      {exerciseType === "Weight" ? (
+        <Animated.View style={{ opacity: animatedValue, transform: [{ translateY: animatedXYTarget.y }] }}>
+          <TextHeader textBody="Target Area" marginTop={10} fontSize={20} />
+        </Animated.View>
+      ) : null}
+      <Animated.View
+        style={{ flex: 1, marginTop: 10, opacity: animatedValue, transform: [{ translateY: animatedXYTarget.y }] }}>
+        <ScrollView>
+          <View style={{ display: "flex", flexDirection: "row", flexWrap: "wrap", justifyContent: "center" }}>
+            {exerciseType === "Weight"
+              ? TARGET_AREA.map((element, index) => {
+                  return (
+                    <Button
+                      key={index}
+                      buttonText={element}
+                      marginVertical={5}
+                      marginHorizontal={5}
+                      paddingVertical={5}
+                      paddingHorizontal={10}
+                      fontFamily="Poppins-Medium"
+                      backgroundColor={targetArea.includes(element) ? colors.notification : colors.card}
+                      onPress={() => handleTargetAreaItems(element)}
+                    />
+                  );
+                })
+              : null}
+          </View>
+        </ScrollView>
+      </Animated.View>
       {processing === true ? <ActivityIndicator size={"large"} color={colors.primary} /> : null}
       <Button
         disabled={processing === true ? true : false}
