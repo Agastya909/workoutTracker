@@ -9,7 +9,7 @@ import { RootStack } from "../../types";
 const Create: React.FC = () => {
   const Navigation = useNavigation<NativeStackNavigationProp<RootStack>>();
   return (
-    <View style={{ flex: 1, marginHorizontal: 10, paddingTop: 40 }}>
+    <View style={{ flex: 1, marginHorizontal: 10, paddingTop: 20 }}>
       <TextHeader textBody="Create" textAlign="center" />
       <View style={{ flex: 0.4 }} />
       <TextBox

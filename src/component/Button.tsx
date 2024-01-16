@@ -38,7 +38,7 @@ const Button: React.FC<ButtonProp> = props => {
         textBody={props.buttonText}
         textAlign="center"
         fontFamily={props.fontFamily || "Poppins-SemiBold"}
-        fontSize={props.textSize || 20}
+        fontSize={props.textSize || 16}
         color={props.textColor || colors.text}
       />
     </Pressable>

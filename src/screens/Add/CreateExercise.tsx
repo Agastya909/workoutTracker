@@ -1,6 +1,6 @@
 import React, { useEffect, useRef, useState } from "react";
 import { View, ToastAndroid, ScrollView, ActivityIndicator, Animated } from "react-native";
-import { TextBox, TextHeader } from "../../component/Textbox";
+import { TextHeader } from "../../component/Textbox";
 import InputBox from "../../component/TextInput";
 import Button from "../../component/Button";
 import { NativeStackNavigationProp } from "@react-navigation/native-stack";
@@ -16,16 +16,20 @@ const CreateExercise: React.FC = () => {
   const [exerciseType, setExerciseType] = useState<"Cardio" | "Weight">("Weight");
   const [targetArea, setTargetArea] = useState<string[]>([]);
   const [processing, setProcessing] = useState<boolean>(false);
-  const animatedValue = useRef(new Animated.Value(0)).current;
+  const animatedTargetOpacity = useRef(new Animated.Value(0)).current;
   const animatedXYTarget = useRef(new Animated.ValueXY({ x: 0, y: 200 })).current;
+  const animatedXYButtons = useRef(new Animated.ValueXY({ x: 0, y: 200 })).current;
+  const animatedButtonOpacity = useRef(new Animated.Value(0)).current;
 
   useEffect(() => {
-    fadeIn(350);
-    targetSlideIn(350);
+    fadeInButton(350);
+    buttonSlideIn(350);
+    fadeIn(500);
+    targetSlideIn(500);
   }, []);
 
   const fadeIn = (delay?: number) => {
-    Animated.timing(animatedValue, {
+    Animated.timing(animatedTargetOpacity, {
       toValue: 1,
       duration: 150,
       delay: delay || 0,
@@ -34,7 +38,7 @@ const CreateExercise: React.FC = () => {
   };
 
   const fadeOut = () => {
-    Animated.timing(animatedValue, {
+    Animated.timing(animatedTargetOpacity, {
       toValue: 0,
       duration: 150,
       useNativeDriver: true
@@ -47,7 +51,7 @@ const CreateExercise: React.FC = () => {
   const targetSlideIn = (ms?: number) => {
     Animated.timing(animatedXYTarget, {
       toValue: { x: 0, y: 0 },
-      duration: 250,
+      duration: 350,
       delay: ms || 0,
       useNativeDriver: true
     }).start();
@@ -56,8 +60,26 @@ const CreateExercise: React.FC = () => {
   const targetSlideOut = (ms?: number) => {
     Animated.timing(animatedXYTarget, {
       toValue: { x: 0, y: 100 },
-      duration: 250,
+      duration: 350,
       delay: ms || 0,
+      useNativeDriver: true
+    }).start();
+  };
+
+  const buttonSlideIn = (ms?: number) => {
+    Animated.timing(animatedXYButtons, {
+      toValue: { x: 0, y: 0 },
+      duration: 350,
+      delay: ms || 0,
+      useNativeDriver: true
+    }).start();
+  };
+
+  const fadeInButton = (delay?: number) => {
+    Animated.timing(animatedButtonOpacity, {
+      toValue: 1,
+      duration: 150,
+      delay: delay || 0,
       useNativeDriver: true
     }).start();
   };
@@ -108,10 +130,10 @@ const CreateExercise: React.FC = () => {
   };
 
   return (
-    <View style={{ flex: 1, marginHorizontal: 10, paddingTop: 40 }}>
+    <View style={{ flex: 1, marginHorizontal: 10, paddingTop: 20 }}>
       <TextHeader textBody="New Exercise" textAlign="center" />
       <InputBox
-        textSize={20}
+        textSize={16}
         placeholder="Enter name"
         paddingVertical={15}
         paddingHorizontal={20}
@@ -119,49 +141,56 @@ const CreateExercise: React.FC = () => {
         handleChange={handleNameChange}
         marginVertical={20}
       />
-      <TextHeader textBody="Type" fontSize={20} />
-      <View style={{ display: "flex", flexDirection: "row" }}>
-        <View
-          style={{
-            flex: 1,
-            marginTop: 10,
-            marginRight: 5
-          }}>
-          <Button
-            buttonText="Cardio"
-            paddingVertical={10}
-            onPress={() => {
-              fadeOut();
-              targetSlideOut();
-            }}
-            backgroundColor={exerciseType === "Cardio" ? colors.notification : colors.card}
-          />
+      <Animated.View style={{ transform: [{ translateY: animatedXYButtons.y }], opacity: animatedButtonOpacity }}>
+        <TextHeader textBody="Type" fontSize={18} />
+        <View style={{ display: "flex", flexDirection: "row" }}>
+          <View
+            style={{
+              flex: 1,
+              marginTop: 10,
+              marginRight: 5
+            }}>
+            <Button
+              buttonText="Cardio"
+              paddingVertical={10}
+              onPress={() => {
+                fadeOut();
+                targetSlideOut();
+              }}
+              backgroundColor={exerciseType === "Cardio" ? colors.notification : colors.card}
+            />
+          </View>
+          <View
+            style={{
+              flex: 1,
+              marginTop: 10,
+              marginLeft: 5
+            }}>
+            <Button
+              buttonText="Weights"
+              paddingVertical={10}
+              onPress={() => {
+                setExerciseType("Weight");
+                fadeIn(100);
+                targetSlideIn();
+              }}
+              backgroundColor={exerciseType === "Weight" ? colors.notification : colors.card}
+            />
+          </View>
         </View>
-        <View
-          style={{
-            flex: 1,
-            marginTop: 10,
-            marginLeft: 5
-          }}>
-          <Button
-            buttonText="Weights"
-            paddingVertical={10}
-            onPress={() => {
-              setExerciseType("Weight");
-              fadeIn(100);
-              targetSlideIn();
-            }}
-            backgroundColor={exerciseType === "Weight" ? colors.notification : colors.card}
-          />
-        </View>
-      </View>
+      </Animated.View>
       {exerciseType === "Weight" ? (
-        <Animated.View style={{ opacity: animatedValue, transform: [{ translateY: animatedXYTarget.y }] }}>
-          <TextHeader textBody="Target Area" marginTop={10} fontSize={20} />
+        <Animated.View style={{ opacity: animatedTargetOpacity, transform: [{ translateY: animatedXYTarget.y }] }}>
+          <TextHeader textBody="Target Area" marginTop={10} fontSize={18} />
         </Animated.View>
       ) : null}
       <Animated.View
-        style={{ flex: 1, marginTop: 10, opacity: animatedValue, transform: [{ translateY: animatedXYTarget.y }] }}>
+        style={{
+          flex: 1,
+          marginTop: 10,
+          opacity: animatedTargetOpacity,
+          transform: [{ translateY: animatedXYTarget.y }]
+        }}>
         <ScrollView>
           <View style={{ display: "flex", flexDirection: "row", flexWrap: "wrap", justifyContent: "center" }}>
             {exerciseType === "Weight"

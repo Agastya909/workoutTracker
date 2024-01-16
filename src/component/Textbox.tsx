@@ -1,13 +1,25 @@
 import React from "react";
-import { Text } from "react-native";
+import { PixelRatio, Text } from "react-native";
 import { TextBoxProp } from "../types";
+
+const normalizeFontSize = (size: number | undefined) => {
+  if (size === undefined) return;
+  const pxRatio = PixelRatio.get();
+  if (pxRatio > 3) {
+    return size;
+  } else if (pxRatio <= 3 && pxRatio > 2.5) {
+    return size - 2;
+  } else if (pxRatio <= 2.5 && pxRatio > 2) {
+    return size - 4;
+  }
+};
 
 const TextBox: React.FC<TextBoxProp> = props => {
   return (
     <Text
       style={{
         color: props.color || "#FFFFFF",
-        fontSize: props.fontSize || 16,
+        fontSize: normalizeFontSize(props.fontSize) || normalizeFontSize(16),
         fontFamily: props.fontFamily || "Poppins-Medium",
         textAlign: props.textAlign,
         marginTop: props.marginTop || 0,
@@ -32,7 +44,7 @@ const TextHeader: React.FC<TextBoxProp> = props => {
     <Text
       style={{
         color: props.color || "#FFFFFF",
-        fontSize: props.fontSize || 30,
+        fontSize: normalizeFontSize(props.fontSize) || normalizeFontSize(30),
         fontFamily: props.fontFamily || "Poppins-Bold",
         textAlign: props.textAlign,
         marginTop: props.marginTop || 0,

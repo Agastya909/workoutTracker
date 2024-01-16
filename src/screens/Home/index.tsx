@@ -10,7 +10,7 @@ import LottieView from "lottie-react-native";
 const Home: React.FC = () => {
   const Navigation = useNavigation<NativeStackNavigationProp<RootStack>>();
   return (
-    <View style={{ flex: 1, marginHorizontal: 10, marginTop: 40 }}>
+    <View style={{ flex: 1, marginHorizontal: 10, marginTop: 20 }}>
       <TextHeader textBody="Start your workout, Hit the start button." />
       <LottieView autoPlay loop source={require("../../assets/animations/main-anim.json")} style={{ flex: 1 }} />
       <Button buttonText="Start" paddingVertical={10} onPress={() => Navigation.navigate("currentWorkout")} />
