@@ -19,7 +19,7 @@ export type RootStack = {
   tab: undefined;
   currentWorkout: undefined;
   createExercise: undefined;
-  createWorkout: undefined;
+  createWorkout: { exercise: Exercise[] };
   workoutHistory: WorkoutHistory;
 };
 
