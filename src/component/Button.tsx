@@ -15,6 +15,7 @@ type ButtonProp = {
   elevation?: number;
   fontFamily?: string;
   textColor?: string;
+  disabled?: boolean;
   onPress: () => void;
 };
 
@@ -23,6 +24,7 @@ const Button: React.FC<ButtonProp> = props => {
   return (
     <Pressable
       onPress={props.onPress}
+      disabled={props.disabled || false}
       style={{
         backgroundColor: props.backgroundColor || colors.primary,
         borderRadius: props.borderRadius || 10,

@@ -6,7 +6,7 @@ type Props = {
   placeholder: string;
   value: string;
   handleChange: (text: string) => void;
-  handleSubmit: () => Promise<void>;
+  handleSubmit?: () => Promise<void>;
   textColor?: string;
   placeholderColor?: string;
   textSize?: number;
