@@ -1,6 +1,6 @@
 import { useTheme } from "@react-navigation/native";
 import React from "react";
-import { NativeSyntheticEvent, TextInput, TextInputChangeEventData } from "react-native";
+import { TextInput } from "react-native";
 
 type Props = {
   placeholder: string;

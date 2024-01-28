@@ -4,4 +4,4 @@ export { default as CreateWorkout } from "./Add/CreateWorkout";
 export { default as WorkoutDetails } from "./History/WorkoutDetails";
 export { default as Workout } from "./History/index";
 export { default as Home } from "./Home/index";
-export { default as CurrenWorkout } from "./Home/CurrentWorkout";
+export { default as SelectWorkout } from "./Workout/SelectWorkout";

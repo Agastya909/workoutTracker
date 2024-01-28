@@ -17,14 +17,19 @@ export type WorkoutHistory = {
 
 export type RootStack = {
   tab: undefined;
-  currentWorkout: undefined;
+  selectWorkout: undefined;
+  currentWorkout: {
+    workout: Workout;
+  };
   createExercise: undefined;
-  createWorkout: { exercise: Exercise[] };
+  createWorkout: {
+    exercise: Exercise[];
+  };
   workoutHistory: WorkoutHistory;
 };
 
 export type TextBoxProp = {
-  textBody: string;
+  textBody: string | number;
   color?: string;
   fontSize?: number;
   fontFamily?: string;
