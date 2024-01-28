@@ -1,11 +1,9 @@
-import { View, Text, Pressable, ToastAndroid, TouchableOpacity, TextInput } from "react-native";
+import { View, TouchableOpacity, TextInput, Button } from "react-native";
 import React, { useState } from "react";
-import { TextBox, TextHeader } from "../../component/Textbox";
+import { TextBox } from "../../component/Textbox";
 import { Exercise } from "../../types";
 import { useTheme } from "@react-navigation/native";
-import InputBox from "../../component/TextInput";
 import Icon from "react-native-vector-icons/MaterialCommunityIcons";
-import Button from "../../component/Button";
 
 type Prop = Exercise;
 
