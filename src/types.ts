@@ -9,9 +9,39 @@ export type Workout = {
   exercises: Exercise[];
 };
 
+type WeightData = {
+  reps: string | "0";
+  weight: string | "0";
+};
+
+type CardioData = {
+  hours: string | "0";
+  minutes: string | "0";
+};
+
+type WeightExercise = {
+  exerciseName: string;
+  type: "Weight";
+  data: WeightData[];
+};
+
+type CardioExercise = {
+  exerciseName: string;
+  type: "Cardio";
+  data: CardioData[];
+};
+
+type ExerciseData = WeightExercise | CardioExercise;
+
 export type WorkoutHistory = {
   name: string;
-  timestamp: Date;
+  date: string;
+  exercises: ExerciseData[];
+};
+
+export type CurrentWorkoutType = {
+  name: string;
+  timestamp: string;
   exercises: Exercise[];
 };
 

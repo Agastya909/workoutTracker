@@ -1,9 +1,10 @@
-import { View, TouchableOpacity, TextInput, Button } from "react-native";
+import { View, TouchableOpacity, TextInput } from "react-native";
 import React, { useState } from "react";
 import { TextBox } from "../../component/Textbox";
 import { Exercise } from "../../types";
 import { useTheme } from "@react-navigation/native";
 import Icon from "react-native-vector-icons/MaterialCommunityIcons";
+import Button from "../../component/Button";
 
 type Prop = Exercise;
 
@@ -18,7 +19,6 @@ type CardioData = {
 };
 
 const ExerciseCard: React.FC<Prop> = ({ name, type, target }) => {
-  console.log(type);
   const { colors } = useTheme();
   const [weight, setWeight] = useState<WeightData[]>([
     {
@@ -27,10 +27,12 @@ const ExerciseCard: React.FC<Prop> = ({ name, type, target }) => {
     }
   ]);
 
-  const [cardio, setCardio] = useState<CardioData>({
-    hours: null,
-    minutes: null
-  });
+  const [cardio, setCardio] = useState<CardioData[]>([
+    {
+      hours: null,
+      minutes: null
+    }
+  ]);
 
   const increaseSetCount = () => {
     setWeight([...weight, { reps: "0", weight: "0" }]);
@@ -106,7 +108,9 @@ const ExerciseCard: React.FC<Prop> = ({ name, type, target }) => {
       {type === "Weight" ? (
         weight.map((element, index) => {
           return (
-            <View style={{ flex: 1, flexDirection: "row", justifyContent: "space-between", marginVertical: 5 }}>
+            <View
+              key={index}
+              style={{ flex: 1, flexDirection: "row", justifyContent: "space-between", marginVertical: 5 }}>
               <View style={{ flexDirection: "row", alignItems: "center" }}>
                 <TextBox textBody="Weight" />
                 <TextInput
