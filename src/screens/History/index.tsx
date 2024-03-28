@@ -3,11 +3,13 @@ import { ActivityIndicator, Text, TextBase, TouchableOpacity, View } from "react
 import { fetchWorkOutHistory } from "../../firestore/firestore";
 import { TextBox } from "../../component/Textbox";
 import Card from "../../component/Card";
-import { WorkoutHistory } from "../../types";
-import { useTheme } from "@react-navigation/native";
+import { RootStack, WorkoutHistory } from "../../types";
+import { useNavigation, useTheme } from "@react-navigation/native";
+import { NativeStackNavigationProp } from "@react-navigation/native-stack";
 
 const History: React.FC = () => {
   const { colors } = useTheme();
+  const Navigation = useNavigation<NativeStackNavigationProp<RootStack>>();
   const [fetchData, setFetching] = useState<boolean>(false);
   const [history, setHistory] = useState<WorkoutHistory[]>();
   useEffect(() => {
@@ -30,7 +32,7 @@ const History: React.FC = () => {
   const HistoryCard: React.FC<{ data: WorkoutHistory }> = data => {
     return (
       <TouchableOpacity
-        onPress={() => console.log(data)}
+        onPress={() => Navigation.navigate("workoutHistory", data.data)}
         style={{
           flexDirection: "row",
           justifyContent: "space-between",

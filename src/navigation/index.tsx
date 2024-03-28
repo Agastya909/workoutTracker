@@ -44,7 +44,7 @@ const RootStackNavigator: React.FC = () => {
           <Stack.Screen
             name="workoutHistory"
             component={WorkoutDetails}
-            options={{ headerShown: false, animation: "slide_from_right" }}
+            options={{ headerShown: true, animation: "slide_from_right", headerTitle: "History" }}
           />
           <Stack.Screen
             name="selectWorkout"
