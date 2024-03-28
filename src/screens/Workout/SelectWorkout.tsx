@@ -1,4 +1,4 @@
-import React, { useCallback, useEffect, useState } from "react";
+import React, { useEffect, useState } from "react";
 import { ActivityIndicator, RefreshControl, ScrollView, ToastAndroid, View } from "react-native";
 import { TextHeader } from "../../component/Textbox";
 import { useNavigation, useTheme } from "@react-navigation/native";
@@ -6,8 +6,6 @@ import Button from "../../component/Button";
 import { NativeStackNavigationProp, NativeStackScreenProps } from "@react-navigation/native-stack";
 import { RootStack, Workout } from "../../types";
 import { fetchWorkouts } from "../../firestore/firestore";
-import { setName } from "../../store/currentWorkout";
-import { useDispatch } from "react-redux";
 
 type Prop = NativeStackScreenProps<RootStack, "selectWorkout">;
 
@@ -17,7 +15,6 @@ const SelectWorkout: React.FC<Prop> = ({ route }) => {
   const [workouts, setWorkouts] = useState<Workout[]>([]);
   const [refreshing, setRefreshing] = useState<boolean>(false);
   const { colors } = useTheme();
-  const dispatch = useDispatch();
 
   useEffect(() => {
     async function getWorkoutData() {
@@ -55,9 +52,8 @@ const SelectWorkout: React.FC<Prop> = ({ route }) => {
               return (
                 <Button
                   key={index}
-                  buttonText={element.name}false
+                  buttonText={element.name}
                   onPress={() => {
-                    dispatch(setName(element.name));
                     setSelectedWorkout({
                       exercises: element.exercises,
                       name: element.name
